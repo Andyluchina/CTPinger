@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/rpc"
 	"os"
@@ -30,10 +31,11 @@ func main() {
 
 	var reply ShuffleInitReply
 
+	fmt.Println(server_address)
 	for !ping_successful {
 		err = network_interface.Call("CTLogCheckerAuditor.PingStartShuffle", req, &reply)
 		if err != nil || !reply.Status {
-			// log.Fatal("arith error:", err)
+			fmt.Println(err)
 			time.Sleep(2 * time.Second)
 		}
 		if reply.Status {
