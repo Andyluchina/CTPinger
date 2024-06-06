@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/rpc"
 	"os"
 	"time"
@@ -20,9 +19,18 @@ func main() {
 
 	server_address := args[0]
 
-	network_interface, err := rpc.DialHTTP("tcp", server_address)
-	if err != nil {
-		log.Fatal("dialing:", err)
+	dial_successful := false
+
+	var network_interface *rpc.Client
+	var err error = nil
+	for !dial_successful {
+		network_interface, err = rpc.DialHTTP("tcp", server_address)
+		if err != nil {
+			fmt.Println(err)
+			// time.Sleep(2 * time.Second)
+		} else {
+			dial_successful = true
+		}
 	}
 
 	ping_successful := false
